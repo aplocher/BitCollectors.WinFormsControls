@@ -9,27 +9,6 @@ using BitCollectors.WinFormsControls.Common.Win32;
 using BitCollectors.WinFormsControls.ControlExtensions;
 using BitCollectors.WinFormsControls.Properties;
 
-/*
- * Features:
- * - Watermark
- * - Escape btn clears
- * - Action button
- * - Border customizations
- * - Consider adding extensions for Numeric input (similar to the Color ext control)
- */
-
-// Phase 1:
-// TODO 11/6, 11/7, finish this phase 1 implementation 
-// TODO: (phase1) Implement TextBoxButtonActions
-// TODO: (phase1) Border customizations
-// Phase 2:
-// TODO: (phase2) consider adding an extension control for numeric input (similar to the color ext control, maybe look at that moca.net thing) - http://stackoverflow.com/questions/463299/how-do-i-make-a-textbox-that-only-accepts-numbers?rq=1
-// TODO: (phase2) consider allowing multiple action buttons (like a Clear and a Go), using an internal FlowLayoutPanel?
-// TODO: (phase2) Nmeumonics from watermark
-// TODO: (phase2) Use ContentAlignment enum for action button position (ButtonPosition property [topright, middleright, etc] adn ButtonMargin)
-// TODO: (phase1) Fix designer bug with Text/WatermarkText properties [moved to phase2]
-// Breadcrumb navigation (like WIndows Explorer AB)
-
 namespace BitCollectors.WinFormsControls
 {
     public class TextBoxEx : TextBox
@@ -105,7 +84,7 @@ namespace BitCollectors.WinFormsControls
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)
-        { // http://www.xtremedotnettalk.com/showthread.php?t=75210
+        {
             switch (e.KeyChar)
             {
                 case '\r':
@@ -120,41 +99,6 @@ namespace BitCollectors.WinFormsControls
 
             base.OnKeyPress(e);
         }
-        //public override Size MinimumSize
-        //{
-        //    get { return base.MinimumSize; }
-        //    set { base.MinimumSize = value; }
-        //}
-
-        //public override Size GetPreferredSize(Size proposedSize)
-        //{
-        //    return base.GetPreferredSize(proposedSize);
-        //}
-
-        //const int RequestedHight = 40;
-
-        //protected override void OnSizeChanged(EventArgs e)
-        //{
-        //    base.OnSizeChanged(e);
-        //    AssureRequestedHight();
-        //}
-
-        //protected override void OnCreateControl()
-        //{
-        //    base.OnCreateControl();
-        //    //AssureRequestedHight();
-        //}
-
-        //private void AssureRequestedHight()
-        //{
-        //    if (this.Size.Height != RequestedHight && !this.Multiline)
-        //    {
-        //        this.Multiline = true;
-        //        this.MinimumSize = new Size(0, RequestedHight);
-        //        this.Size = new Size(this.Size.Width, RequestedHight);
-        //        this.Multiline = false;
-        //    }
-        //}
 
         #region Constructor(s)
         public TextBoxEx()
@@ -166,7 +110,8 @@ namespace BitCollectors.WinFormsControls
             _watermarkText = "";
             _watermarkForeColor = SystemColors.GrayText;
 
-            _actionButton = new ButtonEx {
+            _actionButton = new ButtonEx
+            {
                 Anchor = AnchorStyles.Right,
                 Cursor = Cursors.Arrow,
                 FlatStyle = FlatStyleEx.FlatEx,
@@ -187,30 +132,8 @@ namespace BitCollectors.WinFormsControls
 
             RefreshWatermarkAppearance();
             RefreshInnerControlLayout(true);
-
-            //base.Text += "\r\n\r\n\r\nTest123\r\n\r\n\r\n";
-
-            //_components = new Container();
-
-            //_graphicalOverlay = new GraphicalOverlay(_components);
-            //_graphicalOverlay.Paint += (sender, args) => {
-            //    args.Graphics.DrawRectangle(Pens.DarkRed, 2, 2, 30, 30);
-            //    args.Graphics.DrawRectangle(Pens.DarkRed, 1, 2, 30, 30);
-            //    args.Graphics.DrawRectangle(Pens.DarkRed, 3, 3, 30, 30);
-            //};
-
-            //_graphicalOverlay.Owner = this;
-            //_customPaintTextBox = new TextBoxBorderPainter(Handle, Parent.Handle);
-            //SetTextBoxFormatingRectangle(new Rectangle(0, 0, 100, 100));
-            //NativeMethods.SendMessage(Handle, NativeMethods.EM_SETRECT, NativeMethods.EC_LEFTMARGIN, ColorSquareDimensions.Width + 4);
         }
         #endregion
-
-        //private void SetTextBoxFormatingRectangle(Rectangle rect)
-        //{
-        //    NativeMethods.RECT rc = new NativeMethods.RECT(rect);
-        //    //NativeMethods.SendMessage(Handle, NativeMethods.EM_SETRECT, 0, ref rc);
-        //}
 
         #region Properties
         [Category("Border")]
@@ -369,10 +292,7 @@ namespace BitCollectors.WinFormsControls
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public TextBoxLayoutExtras LayoutExtras
-        {
-            get { return _layoutExtras; }
-        }
+        public TextBoxLayoutExtras LayoutExtras { get; } = new TextBoxLayoutExtras();
 
         private void CustomBorderSetter(Border border, Border newValue)
         {
@@ -383,7 +303,6 @@ namespace BitCollectors.WinFormsControls
 
 
             RefreshBorderAppearance();
-
         }
 
         private void RefreshBorderAppearance()
@@ -406,7 +325,6 @@ namespace BitCollectors.WinFormsControls
 
         private bool _isMouseOver = false;
         private bool _multiline;
-        private TextBoxLayoutExtras _layoutExtras = new TextBoxLayoutExtras();
 
         //public bool ShouldSerializeButtonTextFont() { return !Equals(_actionButton.Font, Control.DefaultFont); }
         //public void ResetMyFont() { _actionButton.Font = DefaultFont; }
@@ -456,12 +374,6 @@ namespace BitCollectors.WinFormsControls
                 RefreshWatermarkAppearance();
             }
         }
-
-        //[Category("Action Button")]
-        //[DefaultValue(typeof(TextBoxButtonActions), "Clear")]
-        //[Browsable(true)]
-        //[EditorBrowsable(EditorBrowsableState.Always)]
-        //public TextBoxButtonActions ButtonAction { get; set; }
 
         [Category("Watermark")]
         [DefaultValue(typeof(Color), "GrayText")]
@@ -555,7 +467,7 @@ namespace BitCollectors.WinFormsControls
 
             Console.WriteLine(rect);
 
-            rect.Y = rect.Height/2;
+            rect.Y = rect.Height / 2;
             NativeMethods.SendMessage(Handle, NativeMethods.EM_SETRECT, (IntPtr)0, ref rect);
         }
 
@@ -575,8 +487,7 @@ namespace BitCollectors.WinFormsControls
 
         protected virtual void OnActionButtonClicked(CancelEventArgs e)
         {
-            if (ActionButtonClicked != null)
-                ActionButtonClicked(this, e);
+            ActionButtonClicked?.Invoke(this, e);
 
             if (!e.Cancel)
             {
@@ -590,7 +501,7 @@ namespace BitCollectors.WinFormsControls
             // http://msdn.microsoft.com/en-us/library/system.windows.forms.systeminformation.bordersize(v=vs.110).aspx
             // http://msdn.microsoft.com/en-us/library/system.windows.forms.textboxbase.borderstyle(v=vs.110).aspx
             var borderSize = _borderStyle == BorderStyleEx.Custom
-                ? (_customPaintTextBox == null || _customPaintTextBox.Border == null ? 0 : _customPaintTextBox.Border.Size)
+                ? (_customPaintTextBox?.Border?.Size ?? 0)
                 : 2;
 
             var currentInnerRectangle = _innerRectangle;
@@ -660,12 +571,7 @@ namespace BitCollectors.WinFormsControls
         private class TextBoxBorderPainter : NativeWindow, IDisposable
         {
             #region Fields
-            //private Pen _borderPenFocus;
             private Pen _borderPen;
-            //private Pen _borderPenMouseOver;
-            //private Border _customBorder;
-            //private Border _customBorderMouseOver;
-            //private Border _customBorderFocus;
             private Border _border;
             #endregion
 
@@ -676,23 +582,6 @@ namespace BitCollectors.WinFormsControls
                 TextBoxEx = textBoxEx;
             }
             #endregion
-
-            //private void CustomBorderSetter(Border border, Border value)
-            //{
-            //    if (border != value)
-            //    {
-            //        border = value;
-            //        if (_borderPen == null)
-            //        {
-            //            _borderPen = new Pen(value.Color, value.Size);
-            //        }
-            //        else
-            //        {
-            //            _borderPen.Color = value.Color;
-            //            _borderPen.Width = value.Size;
-            //        }
-            //    }
-            //}
 
             #region Properties
             public Border Border
@@ -709,28 +598,6 @@ namespace BitCollectors.WinFormsControls
                 }
             }
 
-            //public Border CustomBorder
-            //{
-            //    get { return _customBorder; }
-            //    set
-            //    {
-            //        CustomBorderSetter(_customBorder, value);
-            //        _customBorder = value;
-            //    }
-            //}
-
-            //public Border CustomBorderFocus
-            //{
-            //    get { return _customBorderFocus; }
-            //    set { CustomBorderSetter(_customBorderFocus, value); }
-            //}
-
-            //public Border CustomBorderMouseOver
-            //{
-            //    get { return _customBorderMouseOver; }
-            //    set { CustomBorderSetter(_customBorderMouseOver, value); }
-            //}
-
             public TextBoxEx TextBoxEx { get; private set; }
             #endregion
 
@@ -742,18 +609,6 @@ namespace BitCollectors.WinFormsControls
                     _borderPen.Dispose();
                     _borderPen = null;
                 }
-
-                //if (_borderPenMouseOver != null)
-                //{
-                //    _borderPenMouseOver.Dispose();
-                //    _borderPenMouseOver = null;
-                //}
-
-                //if (_borderPenFocus != null)
-                //{
-                //    _borderPenFocus.Dispose();
-                //    _borderPenFocus = null;
-                //}
             }
             #endregion
 
@@ -781,32 +636,6 @@ namespace BitCollectors.WinFormsControls
                 textBoxGraphics.DrawRectangle(_borderPen, new Rectangle(TextBoxEx.Location, TextBoxEx.Size));
             }
             #endregion
-
-
-            //const int RequestedHight = 40;
-
-            //protected override void OnSizeChanged(EventArgs e)
-            //{
-            //    base.OnSizeChanged(e);
-            //    AssureRequestedHight();
-            //}
-
-            //protected override void OnCreateControl()
-            //{
-            //    base.OnCreateControl();
-            //    //AssureRequestedHight();
-            //}
-
-            //private void AssureRequestedHight()
-            //{
-            //    if (this.Size.Height != RequestedHight && !this.Multiline)
-            //    {
-            //        this.Multiline = true;
-            //        this.MinimumSize = new Size(0, RequestedHight);
-            //        this.Size = new Size(this.Size.Width, RequestedHight);
-            //        this.Multiline = false;
-            //    }
-            //}
         }
         #endregion
 

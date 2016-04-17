@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31010.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitCollectors.WinFormsControl.TestUI", "BitCollectors.WinFormsControl.TestUI\BitCollectors.WinFormsControl.TestUI.csproj", "{431E51BD-C8B8-41C0-A37A-7769D710597A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitCollectors.WinFormsControls.TestUI", "BitCollectors.WinFormsControls.TestUI\BitCollectors.WinFormsControls.TestUI.csproj", "{431E51BD-C8B8-41C0-A37A-7769D710597A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitCollectors.WinFormsControls", "BitCollectors.WinFormsControls\BitCollectors.WinFormsControls.csproj", "{F4FF6B73-400F-4AC3-9546-C3121D2C6413}"
-EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "BitCollectors.WinFormsControls.Diagrams", "BitCollectors.WinFormsControls.Diagrams\BitCollectors.WinFormsControls.Diagrams.modelproj", "{69C68096-D53B-4C93-954F-293A5049E1CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,16 +41,6 @@ Global
 		{F4FF6B73-400F-4AC3-9546-C3121D2C6413}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F4FF6B73-400F-4AC3-9546-C3121D2C6413}.Release|x86.ActiveCfg = Release|x86
 		{F4FF6B73-400F-4AC3-9546-C3121D2C6413}.Release|x86.Build.0 = Release|x86
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{69C68096-D53B-4C93-954F-293A5049E1CC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

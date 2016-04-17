@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BitCollectors.WinFormsControls.Internal
@@ -12,18 +10,18 @@ namespace BitCollectors.WinFormsControls.Internal
 
         private void AssignSearchControlWndProcHook(TreeViewEx treeView)
         {
-            var action = new Action(() =>
-            {
-                var searchHook = new SearchControlNativeWindowHooks { TreeViewControl = treeView };
-                searchHook.AssignHandle(_searchInputControl.Handle);
-            });
+            //var action = new Action(() =>
+            //{
+            //    var searchHook = new SearchControlNativeWindowHooks { TreeViewControl = treeView };
+            //    searchHook.AssignHandle(_searchInputControl.Handle);
+            //});
 
-            _searchInputControl.HandleCreated += (sender, args) => action();
+            //_searchInputControl.HandleCreated += (sender, args) => action();
 
-            if (_searchInputControl.IsHandleCreated)
-            {
-                action();
-            }
+            //if (_searchInputControl.IsHandleCreated)
+            //{
+            //    action();
+            //}
         }
 
         private void HandleSearchInputKeyDown(KeyEventArgs keyArguments)
@@ -33,20 +31,20 @@ namespace BitCollectors.WinFormsControls.Internal
                 case Keys.Down:
                     keyArguments.Handled = true;
                     keyArguments.SuppressKeyPress = true;
-                    _treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
-                        ? _treeViewControl.Nodes[0]
-                        : (TreeNodeEx)_treeViewControl.SelectedNode.NextNode;
+                    //_treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
+                    //    ? _treeViewControl.Nodes[0]
+                    //    : (TreeNodeEx)_treeViewControl.SelectedNode.NextNode;
                     _treeViewControl.Focus();
                     break;
 
-                case Keys.Up:
-                    keyArguments.Handled = true;
-                    keyArguments.SuppressKeyPress = true;
-                    _treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
-                        ? _treeViewControl.Nodes.Last()
-                        : (TreeNodeEx)_treeViewControl.SelectedNode.PrevNode;
-                    _treeViewControl.Focus();
-                    break;
+                    //case Keys.Up:
+                    //    keyArguments.Handled = true;
+                    //    keyArguments.SuppressKeyPress = true;
+                    //    //_treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
+                    //    //    ? _treeViewControl.Nodes.Last()
+                    //    //    : (TreeNodeEx)_treeViewControl.SelectedNode.PrevNode;
+                    //    _treeViewControl.Focus();
+                    //    break;
             }
         }
 
@@ -116,8 +114,12 @@ namespace BitCollectors.WinFormsControls.Internal
                 switch (keyArguments.KeyCode)
                 {
                     case Keys.Escape:
-                        _searchInputControl.Text = string.Empty;
-                        keyArguments.Handled = true;
+                        var textBox = _searchInputControl as TextBoxEx;
+                        if (textBox != null && textBox.EscapeKeyClearsInput)
+                        {
+                            textBox.Text = string.Empty;
+                            keyArguments.Handled = true;
+                        }
                         break;
 
                     case Keys.Back:
@@ -135,6 +137,14 @@ namespace BitCollectors.WinFormsControls.Internal
                         keyArguments.Handled = true;
                         break;
 
+                    case Keys.Up:
+                        if (_treeViewControl.SelectedNode?.Level == 0 && _treeViewControl.SelectedNode?.Index == 0)
+                        {
+                            _enhancedTextBox.Focus();
+                            _enhancedTextBox.SelectAll();
+                            keyArguments.Handled = true;
+                        }
+                        break;
                 }
             }
         }
@@ -177,6 +187,19 @@ namespace BitCollectors.WinFormsControls.Internal
 
             this._treeViewControl.KeyDown
                 += (sender, args) => HandleTreeViewKeyDown(args);
+
+            this._treeViewControl.KeyUp
+                += (sender, args) => HandleTreeViewKeyUp(args);
+        }
+
+        private void HandleTreeViewKeyUp(KeyEventArgs args)
+        {
+            switch (args.KeyCode)
+            {
+                case Keys.Escape:
+                    _treeViewControl.Filter(_searchInputControl.Text);
+                    break;
+            }
         }
     }
 }

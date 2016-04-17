@@ -22,37 +22,37 @@ namespace BitCollectors.WinFormsControls.Internal
 
             switch (m.Msg)
             {
-                case NativeMethods.WM_KILLFOCUS:
-                    if (_suppressKillFocusCheckOnce)
-                    {
-                        _suppressKillFocusCheckOnce = false;
-                    }
-                    else if (!TreeViewControl.Focused && !TreeViewControl.AttachedSearchControl.Focused &&
-                        m.WParam.ToString() != TreeViewControl.Handle.ToString() &&
-                        m.WParam.ToString() != TreeViewControl.AttachedSearchControl.Handle.ToString())
-                    {
-                        _suppressKillFocusCheckOnce = true;
-                        NativeMethods.PostMessage(TreeViewControl.Handle, m.Msg, m.WParam, m.LParam);
-                    }
-                    else
-                        return;
+                //case NativeMethods.WM_KILLFOCUS:
+                //    if (_suppressKillFocusCheckOnce)
+                //    {
+                //        _suppressKillFocusCheckOnce = false;
+                //    }
+                //    else if (!TreeViewControl.Focused && !TreeViewControl.AttachedSearchControl.Focused &&
+                //        m.WParam.ToString() != TreeViewControl.Handle.ToString() &&
+                //        m.WParam.ToString() != TreeViewControl.AttachedSearchControl.Handle.ToString())
+                //    {
+                //        _suppressKillFocusCheckOnce = true;
+                //        NativeMethods.PostMessage(TreeViewControl.Handle, m.Msg, m.WParam, m.LParam);
+                //    }
+                //    else
+                //        return;
 
-                    break;
+                //    break;
 
-                case NativeMethods.WM_SETFOCUS:
-                    if (_suppressSetFocusCheckOnce)
-                    {
-                        _suppressSetFocusCheckOnce = false;
-                    }
-                    else if (TreeViewControl.Focused || TreeViewControl.AttachedSearchControl.Focused ||
-                        m.WParam.ToString() == TreeViewControl.Handle.ToString() ||
-                        m.WParam.ToString() == TreeViewControl.AttachedSearchControl.Handle.ToString())
-                    {
-                        _suppressSetFocusCheckOnce = true;
-                        NativeMethods.PostMessage(TreeViewControl.Handle, NativeMethods.WM_SETFOCUS, m.WParam, m.LParam);
-                    }
+                //case NativeMethods.WM_SETFOCUS:
+                //    if (_suppressSetFocusCheckOnce)
+                //    {
+                //        _suppressSetFocusCheckOnce = false;
+                //    }
+                //    else if (TreeViewControl.Focused || TreeViewControl.AttachedSearchControl.Focused ||
+                //        m.WParam.ToString() == TreeViewControl.Handle.ToString() ||
+                //        m.WParam.ToString() == TreeViewControl.AttachedSearchControl.Handle.ToString())
+                //    {
+                //        _suppressSetFocusCheckOnce = true;
+                //        NativeMethods.PostMessage(TreeViewControl.Handle, NativeMethods.WM_SETFOCUS, m.WParam, m.LParam);
+                //    }
 
-                    break;
+                //    break;
 
                 case NativeMethods.WM_NCDESTROY:
                     this.ReleaseHandle();

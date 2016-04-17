@@ -1,21 +1,18 @@
-﻿using BitCollectors.WinFormsControls;
-using BitCollectors.WinFormsControls.Common;
-using BitCollectors.WinFormsControls.Common.Win32;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using BitCollectors.WinFormsControls;
+using BitCollectors.WinFormsControls.Common;
+using BitCollectors.WinFormsControls.Common.Win32;
 using Timer = System.Windows.Forms.Timer;
 
 namespace BitCollectors.WinFormsControl.TestUI
 {
     public partial class MainForm : Form
     {
-        // http://www.cprogramdevelop.com/2328169/
-        // EM_GETRECT STUFF (UGLY ASS SITE)
-
         public MainForm()
         {
-            string[] names = new string[] { "Adam", "Ale", "Chris", "Ryan", "Matt", "Retchie" };
+            string[] names = new string[] { "Adam", "Ale", "Chris", "Ryan", "Matt", "Retchie", "Mikey", "First Last", "2pac Shakur" };
 
             InitializeComponent();
             var r = new Random();
@@ -28,7 +25,7 @@ namespace BitCollectors.WinFormsControl.TestUI
 
                     for (int k = 0; k < 10; k++)
                     {
-                        subNode.Nodes.Add(new TreeNodeEx(names[r.Next(0, 5)]));
+                        subNode.Nodes.Add(new TreeNodeEx(names[r.Next(0, names.Length - 1)] + r.Next(0, 100).ToString()));
                     }
                     node.Nodes.Add(subNode);
                 }
@@ -80,17 +77,6 @@ namespace BitCollectors.WinFormsControl.TestUI
         }
 
         bool buttonPressed = false;
-
-        //private async void DoStuff()
-        //{
-        //    int i = 0;
-        //    while (i < 5)
-        //    {
-        //        Thread.Sleep(1000);
-        //        textBox1.Text = string.Format("Text: {0}{1}WM: {2}", textBoxEx1.Text, Environment.NewLine, textBoxEx1.WatermarkText);
-        //        i++;
-        //    }
-        //}
 
     }
 

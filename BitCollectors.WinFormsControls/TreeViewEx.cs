@@ -1,10 +1,10 @@
-﻿using BitCollectors.WinFormsControls.Common.Win32;
-using BitCollectors.WinFormsControls.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using BitCollectors.WinFormsControls.Common.Win32;
+using BitCollectors.WinFormsControls.Internal;
 
 namespace BitCollectors.WinFormsControls
 {
@@ -41,8 +41,8 @@ namespace BitCollectors.WinFormsControls
             get { return _themeStyle; }
             set
             {
-                if (Environment.OSVersion.Platform != PlatformID.Win32NT || 
-                    Environment.OSVersion.Version.Major < 6 || 
+                if (Environment.OSVersion.Platform != PlatformID.Win32NT ||
+                    Environment.OSVersion.Version.Major < 6 ||
                     _themeStyle == value)
                     return;
 
@@ -140,16 +140,6 @@ namespace BitCollectors.WinFormsControls
             base.OnKeyUp(e);
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Escape && this.Focused && _useAttachedSearchControl)
-            {
-                _attachedSearchControl.Text = "";
-            }
-
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
@@ -174,52 +164,52 @@ namespace BitCollectors.WinFormsControls
                     }
                     break;
 
-                case NativeMethods.WM_SETFOCUS:
-                    if (!_useAttachedSearchControl)
-                    {
-                        base.WndProc(ref m);
-                        return;
-                    }
+                    //case NativeMethods.WM_SETFOCUS:
+                    //    if (!_useAttachedSearchControl)
+                    //    {
+                    //        base.WndProc(ref m);
+                    //        return;
+                    //    }
 
-                    if (_suppressSetFocusCheckOnce)
-                    {
-                        _suppressSetFocusCheckOnce = false;
-                    }
-                    else if (this.Focused || _attachedSearchControl.Focused ||
-                        m.WParam.ToString() == this.Handle.ToString() ||
-                        m.WParam.ToString() == _attachedSearchControl.Handle.ToString())
-                    {
-                        _suppressSetFocusCheckOnce = true;
-                        NativeMethods.PostMessage(_attachedSearchControl.Handle, NativeMethods.WM_SETFOCUS, m.WParam, m.LParam);
-                    }
-                    break;
+                    //    if (_suppressSetFocusCheckOnce)
+                    //    {
+                    //        _suppressSetFocusCheckOnce = false;
+                    //    }
+                    //    else if (this.Focused || _attachedSearchControl.Focused ||
+                    //        m.WParam.ToString() == this.Handle.ToString() ||
+                    //        m.WParam.ToString() == _attachedSearchControl.Handle.ToString())
+                    //    {
+                    //        _suppressSetFocusCheckOnce = true;
+                    //        NativeMethods.PostMessage(_attachedSearchControl.Handle, NativeMethods.WM_SETFOCUS, m.WParam, m.LParam);
+                    //    }
+                    //    break;
 
-                case NativeMethods.WM_KILLFOCUS:
-                    if (!_useAttachedSearchControl)
-                    {
-                        base.WndProc(ref m);
-                        return;
-                    }
+                    //case NativeMethods.WM_KILLFOCUS:
+                    //    if (!_useAttachedSearchControl)
+                    //    {
+                    //        base.WndProc(ref m);
+                    //        return;
+                    //    }
 
-                    if (_useAttachedSearchControl)
-                    {
-                        if (_suppressKillFocusCheckOnce)
-                        {
-                            _suppressKillFocusCheckOnce = false;
-                        }
-                        else if (!_attachedSearchControl.Focused && !this.Focused &&
-                                 m.WParam.ToString() != this.Handle.ToString() &&
-                                 m.WParam.ToString() != _attachedSearchControl.Handle.ToString())
-                        {
-                            _suppressKillFocusCheckOnce = true;
-                            NativeMethods.PostMessage(_attachedSearchControl.Handle, m.Msg, m.WParam, m.LParam);
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                    break;
+                    //    if (_useAttachedSearchControl)
+                    //    {
+                    //        if (_suppressKillFocusCheckOnce)
+                    //        {
+                    //            _suppressKillFocusCheckOnce = false;
+                    //        }
+                    //        else if (!_attachedSearchControl.Focused && !this.Focused &&
+                    //                 m.WParam.ToString() != this.Handle.ToString() &&
+                    //                 m.WParam.ToString() != _attachedSearchControl.Handle.ToString())
+                    //        {
+                    //            _suppressKillFocusCheckOnce = true;
+                    //            NativeMethods.PostMessage(_attachedSearchControl.Handle, m.Msg, m.WParam, m.LParam);
+                    //        }
+                    //        else
+                    //        {
+                    //            return;
+                    //        }
+                    //    }
+                    //    break;
             }
 
             base.WndProc(ref m);
@@ -399,6 +389,7 @@ namespace BitCollectors.WinFormsControls
             // http://stackoverflow.com/questions/332788/maintain-scroll-position-of-treeview
             base.BeginUpdate();
             base.Nodes.Clear();
+            Console.WriteLine(filter);
             if (string.IsNullOrEmpty(filter))
             {
                 for (var i = 0; i < this.AllNodes.Count; i++)
@@ -423,7 +414,8 @@ namespace BitCollectors.WinFormsControls
                 }
             }
 
-            if (selectedNodePath != null)
+            // TODO maybe revisit this?  Or, maybe not
+            if (1 == 0) //selectedNodePath != null)
             {
                 var collection = this.FilteredNodes;
                 TreeNodeEx selectedNode = null;
@@ -438,16 +430,6 @@ namespace BitCollectors.WinFormsControls
 
                 if (selectedNode != null)
                     this.SelectedNode = selectedNode;
-
-                //var findResults = base.Nodes.Find(selectedNodeName, true);
-                //for (var i = 0; i < findResults.Length; i++)
-                //{
-                //    if (findResults[i].FullPath == selectedNodePath)
-                //    {
-                //        this.SelectedNode = findResults[i];
-                //        break;
-                //    }
-                //}
             }
 
             if (base.Nodes.Count > 0 && base.Nodes[0] != null)
