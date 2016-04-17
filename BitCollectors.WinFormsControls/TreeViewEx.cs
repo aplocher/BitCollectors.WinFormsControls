@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using BitCollectors.WinFormsControls.Common.Win32;
@@ -231,7 +230,7 @@ namespace BitCollectors.WinFormsControls
                 var treeNodeEx = (TreeNodeEx)e.Node;
                 var stringSize = TextRenderer.MeasureText(e.Node.Text.Substring(treeNodeEx.MatchStartIndex, treeNodeEx.MatchEndIndex - treeNodeEx.MatchStartIndex), e.Node.NodeFont);
                 var startOffset = 0;
-                if (treeNodeEx.FilterType == FilterTypes.DirectMatch)
+                if (treeNodeEx.IsMatch) //.FilterType == FilterTypes.DirectMatch)
                 {
                     int padding = -1;
                     if (treeNodeEx.MatchStartIndex > 0)
@@ -257,8 +256,6 @@ namespace BitCollectors.WinFormsControls
                     Color.Empty,
                     TextFormatFlags.VerticalCenter);
             }
-
-
 
             base.OnDrawNode(e);
 
@@ -365,28 +362,19 @@ namespace BitCollectors.WinFormsControls
             var returnValue = new string[node.Level + 1];
             do
             {
-                returnValue[node.Level] = string.Format(@"{0}|{1}|{2}", node.Level, node.Index, node.Text);
+                returnValue[node.Level] = $@"{node.Level}|{node.Index}|{node.Text}";
                 node = node.Parent;
             } while (node != null);
 
             return returnValue;
         }
 
-        private string EncodeNodePathString(TreeNodeEx treeNode)
-        {
-            return string.Join(this.PathSeparator, EncodeNodePath(treeNode));
-        }
-
         private void Filter(string filter, bool force)
         {
             filter = (filter ?? "").Trim();
             if (_lastFilter == filter && !force)
-            {
                 return;
-            }
 
-            string[] selectedNodePath = this.SelectedNode == null ? null : EncodeNodePath(this.SelectedNode);
-            // http://stackoverflow.com/questions/332788/maintain-scroll-position-of-treeview
             base.BeginUpdate();
             base.Nodes.Clear();
             Console.WriteLine(filter);
@@ -409,27 +397,8 @@ namespace BitCollectors.WinFormsControls
                     }
 
                     FilterInternal(filter);
-                    this.ExpandAll();
                     this.SelectedNode = this.TopMatchedNode;
                 }
-            }
-
-            // TODO maybe revisit this?  Or, maybe not
-            if (1 == 0) //selectedNodePath != null)
-            {
-                var collection = this.FilteredNodes;
-                TreeNodeEx selectedNode = null;
-                foreach (var pathElement in selectedNodePath)
-                {
-                    selectedNode = Find(collection, int.Parse(pathElement.Split('|')[0]), pathElement.Split('|')[2]);
-                    if (selectedNode == null)
-                        break;
-
-                    collection = selectedNode.Nodes;
-                }
-
-                if (selectedNode != null)
-                    this.SelectedNode = selectedNode;
             }
 
             if (base.Nodes.Count > 0 && base.Nodes[0] != null)
@@ -459,57 +428,47 @@ namespace BitCollectors.WinFormsControls
         private void FilterInternal(string filter)
         {
             this.TopMatchedNode = null;
-            FilterInternal(this.FilteredNodes, filter);
+            FilterInternal(this.FilteredNodes, filter, false);
 
             RemoveMarkedNodes();
 
             this.Invalidate();
         }
 
-        private void FilterInternal(TreeNodeCollectionEx nodes, string filter)
+        private bool FilterInternal(TreeNodeCollectionEx nodes, string filter, bool hasMatchingAncestor)
         {
             var loweredFilter = filter.ToLower();
             var filterLength = loweredFilter.Length;
+            var returnValue = false;
 
             for (var i = 0; i < nodes.Count; i++)
             {
-                if (nodes[i].Nodes.Count > 0)
-                {
-                    FilterInternal(nodes[i].Nodes, filter);
-                }
-
-                string treeText = (nodes[i].Text ?? "").Trim().ToLower();
+                var node = nodes[i];
+                var treeText = (node.Text ?? "").Trim().ToLower();
                 var index = treeText.IndexOf(loweredFilter, StringComparison.Ordinal);
-                //if (treeText.ToLower().Contains(filter.ToLower()))
-                if (index != -1)
+                var isMatch = (index != -1);
+
+                if (isMatch && TopMatchedNode == null)
+                    TopMatchedNode = node;
+
+                var hasMatchingDescendents =
+                    node.Nodes.Count > 0 &&
+                    FilterInternal(node.Nodes, filter, hasMatchingAncestor || isMatch);
+
+                node.IsMatch = isMatch;
+                if (isMatch)
                 {
-                    TreeNodeEx node = nodes[i];
-                    do
-                    {
-                        //node.Expand();
-                        node.FilterType = FilterTypes.DescendentOfMatch;
-                        node = node.Parent;
-                    } while (node != null);
-
-                    // Need to recurse through children and re-add them and collapse this item.
-                    // If children don't match filter, then collapse the    
-                    // Ex: search for a folder, it should come back but it needs to be useable and children need to be accessible, just collapsed (unless children match filter)
-                    if (this.TopMatchedNode == null)
-                    {
-                        this.TopMatchedNode = nodes[i];
-                        Debug.WriteLine(this.TopMatchedNode.Text);
-                    }
-
-                    nodes[i].FilterType = FilterTypes.DirectMatch;
-                    nodes[i].MatchStartIndex = index;
-                    nodes[i].MatchEndIndex = index + filterLength;
+                    node.MatchStartIndex = index;
+                    node.MatchEndIndex = index + filterLength;
                 }
+
+                node.HasMatchingAncestors = hasMatchingAncestor;
+                node.HasMatchingDescendents = hasMatchingDescendents;
+
+                returnValue = returnValue || isMatch || hasMatchingDescendents;
             }
 
-            //if (nodes.Count > 0)
-            //{
-            //    nodes[0].Expand();
-            //}
+            return returnValue;
         }
 
         private void RemoveMarkedNodes()
@@ -522,12 +481,19 @@ namespace BitCollectors.WinFormsControls
             for (int i = nodes.Count - 1; i >= 0; i--)
             {
                 if (nodes[i].Nodes.Count > 0)
-                {
                     RemoveMarkedNodes(nodes[i].Nodes);
-                }
 
-                if (nodes[i].FilterType == FilterTypes.NoMatch || nodes[i].FilterType == FilterTypes.Undefined)
+                bool hasAnyMatchInFamily =
+                    nodes[i].HasMatchingAncestors ||
+                    nodes[i].HasMatchingDescendents ||
+                    nodes[i].IsMatch;
+
+                if (!hasAnyMatchInFamily)
                     nodes.RemoveAt(i);
+                else if (nodes[i].HasMatchingDescendents)
+                    nodes[i].Expand();
+                else
+                    nodes[i].Collapse();
             }
         }
 

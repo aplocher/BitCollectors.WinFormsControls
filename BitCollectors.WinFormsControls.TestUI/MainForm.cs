@@ -18,11 +18,12 @@ namespace BitCollectors.WinFormsControl.TestUI
             var r = new Random();
             for (int i = 0; i < 3; i++)
             {
-                var node = new TreeNodeEx("Test" + i);
+                var node = new TreeNodeEx("MainTest" + i);
+                node.ImageIndex = 0;
                 for (int j = 0; j < 20; j++)
                 {
                     var subNode = new TreeNodeEx("SubTest" + j);
-
+                    subNode.ImageIndex = 1;
                     for (int k = 0; k < 10; k++)
                     {
                         subNode.Nodes.Add(new TreeNodeEx(names[r.Next(0, names.Length - 1)] + r.Next(0, 100).ToString()));

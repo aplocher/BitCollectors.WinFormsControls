@@ -6,7 +6,7 @@ namespace BitCollectors.WinFormsControls.Internal
         Undefined,
         NoMatch,
         DirectMatch,
-        DescendentOfMatch
-        //, AncestorOfMatch // Do we care about this?
+        HasMatchingAncestors,
+        HasMatchingDescendents
     }
 }

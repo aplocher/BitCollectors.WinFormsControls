@@ -54,8 +54,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxTestUc1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestUc();
-            this.textBoxTestTb1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestTb();
             this.textBoxEx3 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.textBoxEx2 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.textBoxEx1 = new BitCollectors.WinFormsControls.TextBoxEx();
@@ -65,6 +63,9 @@
             this.textBoxEx4 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.treeViewEx1 = new BitCollectors.WinFormsControls.TreeViewEx();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.textBoxTestUc1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestUc();
+            this.textBoxTestTb1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestTb();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tabControlEx1.SuspendLayout();
@@ -267,24 +268,6 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "User Control:";
             // 
-            // textBoxTestUc1
-            // 
-            this.textBoxTestUc1.Location = new System.Drawing.Point(6, 118);
-            this.textBoxTestUc1.Name = "textBoxTestUc1";
-            this.textBoxTestUc1.Size = new System.Drawing.Size(229, 113);
-            this.textBoxTestUc1.TabIndex = 4;
-            // 
-            // textBoxTestTb1
-            // 
-            this.textBoxTestTb1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxTestTb1.Location = new System.Drawing.Point(248, 118);
-            this.textBoxTestTb1.Margin = new System.Windows.Forms.Padding(10);
-            this.textBoxTestTb1.Multiline = true;
-            this.textBoxTestTb1.Name = "textBoxTestTb1";
-            this.textBoxTestTb1.Size = new System.Drawing.Size(222, 113);
-            this.textBoxTestTb1.TabIndex = 6;
-            this.textBoxTestTb1.Text = "This is a test";
-            // 
             // textBoxEx3
             // 
             this.textBoxEx3.AllowLayoutExtras = true;
@@ -388,9 +371,15 @@
             this.treeViewEx1.AttachedSearchControl = this.textBoxEx4;
             this.treeViewEx1.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this.treeViewEx1.EnterKeyCyclesMatches = false;
+            this.treeViewEx1.FullRowSelect = true;
+            this.treeViewEx1.HideSelection = false;
+            this.treeViewEx1.ImageIndex = 0;
+            this.treeViewEx1.ImageList = this.imageList1;
             this.treeViewEx1.Location = new System.Drawing.Point(185, 85);
             this.treeViewEx1.Name = "treeViewEx1";
+            this.treeViewEx1.SelectedImageIndex = 0;
             this.treeViewEx1.SelectedNode = null;
+            this.treeViewEx1.ShowLines = false;
             this.treeViewEx1.Size = new System.Drawing.Size(157, 347);
             this.treeViewEx1.TabIndex = 0;
             this.treeViewEx1.TabStop = false;
@@ -405,6 +394,31 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "ClearButton12x12.png");
+            this.imageList1.Images.SetKeyName(1, "ClearButtonHover12x12.png");
+            // 
+            // textBoxTestUc1
+            // 
+            this.textBoxTestUc1.Location = new System.Drawing.Point(6, 118);
+            this.textBoxTestUc1.Name = "textBoxTestUc1";
+            this.textBoxTestUc1.Size = new System.Drawing.Size(229, 113);
+            this.textBoxTestUc1.TabIndex = 4;
+            // 
+            // textBoxTestTb1
+            // 
+            this.textBoxTestTb1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxTestTb1.Location = new System.Drawing.Point(248, 118);
+            this.textBoxTestTb1.Margin = new System.Windows.Forms.Padding(10);
+            this.textBoxTestTb1.Multiline = true;
+            this.textBoxTestTb1.Name = "textBoxTestTb1";
+            this.textBoxTestTb1.Size = new System.Drawing.Size(222, 113);
+            this.textBoxTestTb1.TabIndex = 6;
+            this.textBoxTestTb1.Text = "This is a test";
             // 
             // MainForm
             // 
@@ -458,5 +472,6 @@
         private WinFormsControls.TextBoxEx textBoxEx4;
         private System.Windows.Forms.TabPage tabPage3;
         private WinFormsControls.TreeViewEx treeViewEx2;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }

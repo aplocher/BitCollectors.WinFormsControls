@@ -30,7 +30,7 @@ namespace BitCollectors.WinFormsControls
 
         public new TreeNodeEx Parent => (TreeNodeEx)base.Parent;
 
-        public bool IsFilteredOut => this.FilterType != FilterTypes.DirectMatch && !this.TreeView.IsFiltered;
+       // public bool IsFilteredOut => this.FilterType != FilterTypes.DirectMatch && !this.TreeView.IsFiltered;
 
         public override object Clone()
         {
@@ -45,7 +45,11 @@ namespace BitCollectors.WinFormsControls
 
         internal bool IsFiltering { get; set; }
 
-        internal FilterTypes FilterType { get; set; }
+        //internal FilterTypes FilterType { get; set; }
+
+        internal bool HasMatchingDescendents { get; set; }
+        internal bool HasMatchingAncestors { get; set; }
+        internal bool IsMatch { get; set; }
 
         internal int MatchStartIndex { get; set; }
 
@@ -60,13 +64,13 @@ namespace BitCollectors.WinFormsControls
         public new TreeNodeEx NextVisibleNode => base.NextVisibleNode as TreeNodeEx;
 
 
-        public TreeNodeEx NextMatchedNode 
+        public TreeNodeEx NextMatchedNode
         {
             get
             {
                 if (IsFiltering)
                 {
-                   
+
                 }
 
                 return this.NextNode;
