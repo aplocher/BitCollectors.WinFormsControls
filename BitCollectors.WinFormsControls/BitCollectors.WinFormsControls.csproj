@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4FF6B73-400F-4AC3-9546-C3121D2C6413}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BitCollectors.WinFormsControls</RootNamespace>
+    <AssemblyName>BitCollectors.WinFormsControls</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>WinFormsControls.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <CodeAnalysisRuleSet>WinFormsControls.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ButtonExEnum.cs" />
+    <Compile Include="ColorComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ColorTextBoxEx.cs">
+      <SubType>component</SubType>
+    </Compile>
+    <Compile Include="ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\Border.cs" />
+    <Compile Include="ControlExtensions\TextBoxExRenderOptions.cs" />
+    <Compile Include="Common\Win32\HandleCollector.cs" />
+    <Compile Include="ControlExtensions\TextBoxExRenderHandler.cs" />
+    <Compile Include="GraphicalOverlay.cs">
+      <SubType>component</SubType>
+    </Compile>
+    <Compile Include="Internal\ColorComboBoxExInternal\ColorComboBoxExEditorService.cs" />
+    <Compile Include="Internal\ColorComboBoxExInternal\ComboBoxTextBox.cs" />
+    <Compile Include="Internal\ColorComboBoxExInternal\DropDownForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BorderUiTypeEditor.cs" />
+    <Compile Include="BorderEditControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BorderEditControl.Designer.cs">
+      <DependentUpon>BorderEditControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Internal\ToolStripControlHostInternal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Internal\ToolStripTextBoxExInternal.cs">
+      <SubType>component</SubType>
+    </Compile>
+    <Compile Include="TabPageEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ButtonEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TestTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TextBoxExEnum.cs" />
+    <Compile Include="TextBoxTest.cs">
+      <SubType>component</SubType>
+    </Compile>
+    <Compile Include="ToolStripTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TabControlEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Internal\TreeNodeCollectionEx.cs" />
+    <Compile Include="TreeNodeEx.cs" />
+    <Compile Include="TreeViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Internal\TreeViewExConstants.cs" />
+    <Compile Include="Internal\InternalConstants.cs" />
+    <Compile Include="Internal\SearchControlNativeWindowHooks.cs" />
+    <Compile Include="Internal\SearchControlWrapper.cs" />
+    <Compile Include="Common\Win32\NativeMethods.cs" />
+    <Compile Include="TextBoxEx.cs">
+      <SubType>component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BorderEditControl.resx">
+      <DependentUpon>BorderEditControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Common\Resources\ClearButton12x12.png" />
+    <Content Include="ProfilingSessions\Session20141010_210905.sdps" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Common\Resources\ClearButtonHover12x12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\TextBoxExtensions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
