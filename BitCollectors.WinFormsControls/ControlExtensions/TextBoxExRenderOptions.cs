@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BitCollectors.WinFormsControls.Common;
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BitCollectors.WinFormsControls.Common
+namespace BitCollectors.WinFormsControls.ControlExtensions
 {
     [Serializable]
     [TypeConverter(typeof(TextBoxLayoutExtrasTypeConverter))]
@@ -18,7 +15,7 @@ namespace BitCollectors.WinFormsControls.Common
         //[TypeConverter(typeof(ExpandableObjectConverter))]public static DependencyProperty Choice4Property = DependencyProperty.Register("Choice4", typeof(Choice), typeof(MyControl));
 
         [Category("Border")]
-        [DefaultValue(typeof (Border), null)]
+        [DefaultValue(typeof(Border), null)]
         [Browsable(true)]
         [EditorBrowsable(EditorBrowsableState.Always)]
         [NotifyParentProperty(true)]
@@ -26,7 +23,8 @@ namespace BitCollectors.WinFormsControls.Common
         public Border Border
         {
             get { return _border; }
-            set {
+            set
+            {
                 if (_border != value)
                 {
                     _border = value;

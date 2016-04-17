@@ -155,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common\Resources\ClearButton12x12.png" />
-    <Content Include="ProfilingSessions\Session20141010_210905.sdps" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Common\Resources\ClearButtonHover12x12.png" />

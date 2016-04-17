@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using BitCollectors.WinFormsControls.Common;
 using BitCollectors.WinFormsControls.Common.Win32;
+using BitCollectors.WinFormsControls.ControlExtensions;
 using BitCollectors.WinFormsControls.Properties;
 
 /*
