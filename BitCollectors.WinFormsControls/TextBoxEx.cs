@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Reflection;
@@ -375,6 +376,9 @@ namespace BitCollectors.WinFormsControls
             }
         }
 
+        // TODO: Consider replacing this with EM_SETCUEBANNER?
+        // See http://www.ageektrapped.com/blog/the-missing-net-1-cue-banners-in-windows-forms-em_setcuebanner-text-prompt/
+        // See http://www.aaronlerch.com/blog/2007/12/01/watermarked-edit-controls/
         [Category("Watermark")]
         [DefaultValue(typeof(Color), "GrayText")]
         [Browsable(true)]
@@ -456,6 +460,20 @@ namespace BitCollectors.WinFormsControls
             base.OnLostFocus(e);
         }
 
+        private string _lastOnTextChangedValue = "";
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            // Must be this.Text and not base.Text
+            if (this.Text == _lastOnTextChangedValue)
+                return;
+
+            base.OnTextChanged(e);
+
+            _lastOnTextChangedValue = this.Text;
+        }
+
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -480,6 +498,11 @@ namespace BitCollectors.WinFormsControls
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        public new void Clear()
+        {
+            Text = "";
+        }
         #endregion
 
         #region Other methods
@@ -491,8 +514,9 @@ namespace BitCollectors.WinFormsControls
 
             if (!e.Cancel)
             {
-                Clear();
-                Focus();
+                this.Clear();
+                OnTextChanged(EventArgs.Empty);
+                this.Focus();
             }
         }
 

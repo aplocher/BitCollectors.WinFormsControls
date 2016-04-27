@@ -54,23 +54,31 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.textBoxTestUc1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestUc();
+            this.textBoxTestTb1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestTb();
             this.textBoxEx3 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.textBoxEx2 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.textBoxEx1 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.cueTextBox2 = new BitCollectors.WinFormsControl.TestUI.CueTextBox();
+            this.cueTextBox1 = new BitCollectors.WinFormsControl.TestUI.CueTextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.treeViewEx3 = new BitCollectors.WinFormsControls.TreeViewEx();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.toolStripTextBoxEx1 = new BitCollectors.WinFormsControls.ToolStripTextBoxEx();
             this.treeViewEx2 = new BitCollectors.WinFormsControls.TreeViewEx();
             this.textBoxEx4 = new BitCollectors.WinFormsControls.TextBoxEx();
             this.treeViewEx1 = new BitCollectors.WinFormsControls.TreeViewEx();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.textBoxTestUc1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestUc();
-            this.textBoxTestTb1 = new BitCollectors.WinFormsControl.TestUI.TextBoxTestTb();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.tabControlEx1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -268,6 +276,24 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "User Control:";
             // 
+            // textBoxTestUc1
+            // 
+            this.textBoxTestUc1.Location = new System.Drawing.Point(6, 118);
+            this.textBoxTestUc1.Name = "textBoxTestUc1";
+            this.textBoxTestUc1.Size = new System.Drawing.Size(229, 113);
+            this.textBoxTestUc1.TabIndex = 4;
+            // 
+            // textBoxTestTb1
+            // 
+            this.textBoxTestTb1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxTestTb1.Location = new System.Drawing.Point(248, 118);
+            this.textBoxTestTb1.Margin = new System.Windows.Forms.Padding(10);
+            this.textBoxTestTb1.Multiline = true;
+            this.textBoxTestTb1.Name = "textBoxTestTb1";
+            this.textBoxTestTb1.Size = new System.Drawing.Size(222, 113);
+            this.textBoxTestTb1.TabIndex = 6;
+            this.textBoxTestTb1.Text = "This is a test";
+            // 
             // textBoxEx3
             // 
             this.textBoxEx3.AllowLayoutExtras = true;
@@ -327,6 +353,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.cueTextBox2);
+            this.tabPage2.Controls.Add(this.cueTextBox1);
+            this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.treeViewEx2);
             this.tabPage2.Controls.Add(this.textBoxEx4);
             this.tabPage2.Controls.Add(this.treeViewEx1);
@@ -338,6 +367,89 @@
             this.tabPage2.Text = "TreeViewEx";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // cueTextBox2
+            // 
+            this.cueTextBox2.CueText = "Please enter something cool here, kthx!";
+            this.cueTextBox2.Location = new System.Drawing.Point(161, 456);
+            this.cueTextBox2.Name = "cueTextBox2";
+            this.cueTextBox2.ShowCueTextWithFocus = true;
+            this.cueTextBox2.Size = new System.Drawing.Size(196, 20);
+            this.cueTextBox2.TabIndex = 5;
+            // 
+            // cueTextBox1
+            // 
+            this.cueTextBox1.CueText = "Please enter something cool here, kthx!";
+            this.cueTextBox1.Location = new System.Drawing.Point(161, 430);
+            this.cueTextBox1.Name = "cueTextBox1";
+            this.cueTextBox1.Size = new System.Drawing.Size(196, 20);
+            this.cueTextBox1.TabIndex = 4;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.treeViewEx3);
+            this.groupBox1.Controls.Add(this.toolStrip2);
+            this.groupBox1.Location = new System.Drawing.Point(348, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 369);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // treeViewEx3
+            // 
+            this.treeViewEx3.AllowHorizontalScrollbars = false;
+            this.treeViewEx3.AllowVerticalScrollbars = false;
+            this.treeViewEx3.AttachedSearchControl = null;
+            this.treeViewEx3.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.treeViewEx3.EnterKeyCyclesMatches = false;
+            this.treeViewEx3.ImageIndex = 0;
+            this.treeViewEx3.ImageList = this.imageList1;
+            this.treeViewEx3.Location = new System.Drawing.Point(6, 44);
+            this.treeViewEx3.Name = "treeViewEx3";
+            this.treeViewEx3.SelectedImageIndex = 0;
+            this.treeViewEx3.SelectedNode = null;
+            this.treeViewEx3.Size = new System.Drawing.Size(188, 319);
+            this.treeViewEx3.TabIndex = 1;
+            this.treeViewEx3.ThemeStyle = BitCollectors.WinFormsControls.TreeViewEx.TreeViewExThemeStyles.Explorer;
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBoxEx1});
+            this.toolStrip2.Location = new System.Drawing.Point(3, 16);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(194, 25);
+            this.toolStrip2.TabIndex = 0;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // toolStripTextBoxEx1
+            // 
+            this.toolStripTextBoxEx1.AcceptsReturn = false;
+            this.toolStripTextBoxEx1.AcceptsTab = false;
+            this.toolStripTextBoxEx1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.toolStripTextBoxEx1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.toolStripTextBoxEx1.BorderStyle = BitCollectors.WinFormsControls.BorderStyleEx.Fixed3D;
+            this.toolStripTextBoxEx1.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.toolStripTextBoxEx1.EscapeKeyClearsInput = true;
+            this.toolStripTextBoxEx1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.toolStripTextBoxEx1.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.toolStripTextBoxEx1.HideSelection = true;
+            this.toolStripTextBoxEx1.Lines = new string[0];
+            this.toolStripTextBoxEx1.MaxLength = 32767;
+            this.toolStripTextBoxEx1.Modified = false;
+            this.toolStripTextBoxEx1.Multiline = false;
+            this.toolStripTextBoxEx1.Name = "toolStripTextBoxEx1";
+            this.toolStripTextBoxEx1.ReadOnly = false;
+            this.toolStripTextBoxEx1.SelectedText = "";
+            this.toolStripTextBoxEx1.SelectionLength = 0;
+            this.toolStripTextBoxEx1.SelectionStart = 0;
+            this.toolStripTextBoxEx1.ShortcutsEnabled = true;
+            this.toolStripTextBoxEx1.Size = new System.Drawing.Size(100, 25);
+            this.toolStripTextBoxEx1.Text = "toolStripTextBoxEx1";
+            this.toolStripTextBoxEx1.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.toolStripTextBoxEx1.WatermarkText = "Filter the tree";
+            this.toolStripTextBoxEx1.WordWrap = true;
+            // 
             // treeViewEx2
             // 
             this.treeViewEx2.AllowHorizontalScrollbars = false;
@@ -345,7 +457,7 @@
             this.treeViewEx2.AttachedSearchControl = null;
             this.treeViewEx2.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this.treeViewEx2.EnterKeyCyclesMatches = false;
-            this.treeViewEx2.Location = new System.Drawing.Point(6, 63);
+            this.treeViewEx2.Location = new System.Drawing.Point(6, 6);
             this.treeViewEx2.Name = "treeViewEx2";
             this.treeViewEx2.SelectedNode = null;
             this.treeViewEx2.Size = new System.Drawing.Size(147, 369);
@@ -359,7 +471,7 @@
             this.textBoxEx4.ButtonText = null;
             this.textBoxEx4.ButtonTextFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxEx4.EscapeKeyClearsInput = true;
-            this.textBoxEx4.Location = new System.Drawing.Point(185, 63);
+            this.textBoxEx4.Location = new System.Drawing.Point(172, 6);
             this.textBoxEx4.Name = "textBoxEx4";
             this.textBoxEx4.Size = new System.Drawing.Size(157, 20);
             this.textBoxEx4.TabIndex = 1;
@@ -375,7 +487,7 @@
             this.treeViewEx1.HideSelection = false;
             this.treeViewEx1.ImageIndex = 0;
             this.treeViewEx1.ImageList = this.imageList1;
-            this.treeViewEx1.Location = new System.Drawing.Point(185, 85);
+            this.treeViewEx1.Location = new System.Drawing.Point(172, 28);
             this.treeViewEx1.Name = "treeViewEx1";
             this.treeViewEx1.SelectedImageIndex = 0;
             this.treeViewEx1.SelectedNode = null;
@@ -384,6 +496,14 @@
             this.treeViewEx1.TabIndex = 0;
             this.treeViewEx1.TabStop = false;
             this.treeViewEx1.ThemeStyle = BitCollectors.WinFormsControls.TreeViewEx.TreeViewExThemeStyles.Explorer;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "Root_Icon.ico");
+            this.imageList1.Images.SetKeyName(1, "Config_Icon.ico");
+            this.imageList1.Images.SetKeyName(2, "Panels_Icon.ico");
             // 
             // tabPage3
             // 
@@ -394,31 +514,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "ClearButton12x12.png");
-            this.imageList1.Images.SetKeyName(1, "ClearButtonHover12x12.png");
-            // 
-            // textBoxTestUc1
-            // 
-            this.textBoxTestUc1.Location = new System.Drawing.Point(6, 118);
-            this.textBoxTestUc1.Name = "textBoxTestUc1";
-            this.textBoxTestUc1.Size = new System.Drawing.Size(229, 113);
-            this.textBoxTestUc1.TabIndex = 4;
-            // 
-            // textBoxTestTb1
-            // 
-            this.textBoxTestTb1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBoxTestTb1.Location = new System.Drawing.Point(248, 118);
-            this.textBoxTestTb1.Margin = new System.Windows.Forms.Padding(10);
-            this.textBoxTestTb1.Multiline = true;
-            this.textBoxTestTb1.Name = "textBoxTestTb1";
-            this.textBoxTestTb1.Size = new System.Drawing.Size(222, 113);
-            this.textBoxTestTb1.TabIndex = 6;
-            this.textBoxTestTb1.Text = "This is a test";
             // 
             // MainForm
             // 
@@ -434,6 +529,10 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -473,5 +572,11 @@
         private System.Windows.Forms.TabPage tabPage3;
         private WinFormsControls.TreeViewEx treeViewEx2;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private WinFormsControls.TreeViewEx treeViewEx3;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private WinFormsControls.ToolStripTextBoxEx toolStripTextBoxEx1;
+        private CueTextBox cueTextBox1;
+        private CueTextBox cueTextBox2;
     }
 }

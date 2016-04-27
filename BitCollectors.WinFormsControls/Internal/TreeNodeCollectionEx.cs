@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace BitCollectors.WinFormsControls.Internal
@@ -85,23 +87,11 @@ namespace BitCollectors.WinFormsControls.Internal
                 _baseList.CopyTo(array, arrayIndex);
         }
 
-        public int Count
-        {
-            get
-            {
-                return _useTreeNodeCollection
-                    ? _baseCollection.Count
-                    : _baseList.Count;
-            }
-        }
+        public int Count => _useTreeNodeCollection
+            ? _baseCollection.Count
+            : _baseList.Count;
 
-        public bool IsReadOnly
-        {
-            get
-            {
-                return _useTreeNodeCollection && _baseCollection.IsReadOnly;
-            }
-        }
+        public bool IsReadOnly => _useTreeNodeCollection && _baseCollection.IsReadOnly;
 
         public bool Remove(TreeNodeEx item)
         {
@@ -120,8 +110,16 @@ namespace BitCollectors.WinFormsControls.Internal
         public IEnumerator<TreeNodeEx> GetEnumerator()
         {
             return _useTreeNodeCollection
-                ? (IEnumerator<TreeNodeEx>)_baseCollection.GetEnumerator()
+                ? GetEnumeratorConverted()
                 : _baseList.GetEnumerator();
+        }
+
+        private IEnumerator<TreeNodeEx> GetEnumeratorConverted()
+        {
+            foreach (var item in _baseCollection)
+            {
+                yield return item as TreeNodeEx;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -145,8 +143,7 @@ namespace BitCollectors.WinFormsControls.Internal
             else
                 _baseList.Insert(index, item);
 
-            if (ListChanged != null)
-                ListChanged(this, new ListChangedEventArgs(ListChangedType.ItemAdded, index));
+            ListChanged?.Invoke(this, new ListChangedEventArgs(ListChangedType.ItemAdded, index));
         }
 
         public void RemoveAt(int index)
@@ -156,8 +153,7 @@ namespace BitCollectors.WinFormsControls.Internal
             else
                 _baseList.RemoveAt(index);
 
-            if (ListChanged != null)
-                ListChanged(this, new ListChangedEventArgs(ListChangedType.ItemDeleted, index));
+            ListChanged?.Invoke(this, new ListChangedEventArgs(ListChangedType.ItemDeleted, index));
         }
 
         public TreeNodeEx this[int index]
@@ -166,17 +162,11 @@ namespace BitCollectors.WinFormsControls.Internal
             {
                 if (_useTreeNodeCollection)
                 {
-                    if (_baseCollection[index] == null)
-                        return null;
-
-                    return _baseCollection[index] as TreeNodeEx;
+                    return _baseCollection[index] == null ? null : _baseCollection[index] as TreeNodeEx;
                 }
                 else
                 {
-                    if (_baseList[index] == null)
-                        return null;
-
-                    return _baseList[index];
+                    return _baseList[index] ?? null;
                 }
             }
             set
@@ -188,16 +178,91 @@ namespace BitCollectors.WinFormsControls.Internal
             }
         }
 
-        public TreeNodeEx[] Find(string key, bool searchAllChildren)
+        public virtual TreeNode this[string key]
         {
-            var nodes = _baseCollection.Find(key, searchAllChildren);
-            var returnValue = new TreeNodeEx[nodes.Length];
-            for (var i = 0; i < nodes.Length; i++)
+            get
             {
-                returnValue[i] = nodes[i] as TreeNodeEx;
+                if (string.IsNullOrEmpty(key))
+                    return null;
+
+                if (_useTreeNodeCollection)
+                    return _baseCollection[key];
+
+                int index = IndexOfKey(key);
+                return this[index];
+            }
+        }
+
+        public virtual int IndexOfKey(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return -1;
             }
 
-            return returnValue;
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Name.Equals(key, StringComparison.OrdinalIgnoreCase))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public TreeNodeEx[] Find(string key, bool searchAllChildren)
+        {
+            if (_useTreeNodeCollection)
+            {
+                var nodes = _baseCollection.Find(key, searchAllChildren);
+                return nodes.Cast<TreeNodeEx>().ToArray();
+            }
+            else
+            {
+                var array = _baseList.ToArray();
+                var foundArray = new ArrayList();
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if (array[i]?.Name == null)
+                        continue;
+
+                    if (array[i].Name.Equals(key, StringComparison.OrdinalIgnoreCase))
+                        foundArray.Add(array[i]);
+                }
+
+                var returnValue = new TreeNodeEx[foundArray.Count];
+                foundArray.CopyTo(returnValue);
+
+                return returnValue;
+            }
+        }
+
+        public void AddRange(TreeNodeEx[] nodes)
+        {
+            foreach (var node in nodes)
+            {
+                this.Add(node);
+            }
+        }
+
+        public virtual bool ContainsKey(string key)
+        {
+            if (_useTreeNodeCollection)
+            {
+                return _baseCollection.ContainsKey(key);
+            }
+            else
+            {
+                for (var i = 0; i < this.Count; i++)
+                {
+                    if (this[i]?.Name == null)
+                        continue;
+
+                    if (this[i].Name.Equals(key, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+
+                return false;
+            }
         }
     }
 

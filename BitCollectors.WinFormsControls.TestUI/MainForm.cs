@@ -20,18 +20,26 @@ namespace BitCollectors.WinFormsControl.TestUI
             {
                 var node = new TreeNodeEx("MainTest" + i);
                 node.ImageIndex = 0;
+                node.SelectedImageIndex = 0;
                 for (int j = 0; j < 20; j++)
                 {
                     var subNode = new TreeNodeEx("SubTest" + j);
                     subNode.ImageIndex = 1;
+                    subNode.SelectedImageIndex = 1;
                     for (int k = 0; k < 10; k++)
                     {
-                        subNode.Nodes.Add(new TreeNodeEx(names[r.Next(0, names.Length - 1)] + r.Next(0, 100).ToString()));
+                        var subSubNode = new TreeNodeEx(names[r.Next(0, names.Length - 1)] + r.Next(0, 100).ToString());
+                        subSubNode.ImageIndex = 2;
+                        subSubNode.ImageIndex = 2;
+                        subNode.Nodes.Add(subSubNode);
                     }
                     node.Nodes.Add(subNode);
                 }
                 treeViewEx1.Nodes.Add(node);
+                treeViewEx3.Nodes.Add(node.Clone() as TreeNodeEx);
             }
+
+            treeViewEx3.AttachedSearchControl = toolStripTextBoxEx1.InnerTextBox;
 
             //DoStuff();
             var t = new Timer { Interval = 700 };

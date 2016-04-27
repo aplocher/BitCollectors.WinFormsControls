@@ -18,7 +18,7 @@ namespace BitCollectors.WinFormsControls
         private int _currentScrollMessageCount;
         private bool _useAttachedSearchControl = false;
         private string _lastFilter = null;
-        private System.Windows.Forms.TextBox _attachedSearchControl = null;
+        private TextBoxEx _attachedSearchControl = null;
         private TreeNodeCollectionEx _allNodes;
         private TreeNodeCollectionEx _filteredNodes;
         private SearchControlWrapper _searchControlWrapper = null;
@@ -92,13 +92,8 @@ namespace BitCollectors.WinFormsControls
             set { base.SelectedNode = value; }
         }
 
-        public new TreeNodeCollectionEx Nodes
-        {
-            get
-            {
-                return this.AllNodes;
-            }
-        }
+        public new TreeNodeCollectionEx Nodes => this.AllNodes;
+
         #endregion
 
         #region Overriden members ('override' keyword)
@@ -162,53 +157,6 @@ namespace BitCollectors.WinFormsControls
                         _currentScrollMessageCount = 0;
                     }
                     break;
-
-                    //case NativeMethods.WM_SETFOCUS:
-                    //    if (!_useAttachedSearchControl)
-                    //    {
-                    //        base.WndProc(ref m);
-                    //        return;
-                    //    }
-
-                    //    if (_suppressSetFocusCheckOnce)
-                    //    {
-                    //        _suppressSetFocusCheckOnce = false;
-                    //    }
-                    //    else if (this.Focused || _attachedSearchControl.Focused ||
-                    //        m.WParam.ToString() == this.Handle.ToString() ||
-                    //        m.WParam.ToString() == _attachedSearchControl.Handle.ToString())
-                    //    {
-                    //        _suppressSetFocusCheckOnce = true;
-                    //        NativeMethods.PostMessage(_attachedSearchControl.Handle, NativeMethods.WM_SETFOCUS, m.WParam, m.LParam);
-                    //    }
-                    //    break;
-
-                    //case NativeMethods.WM_KILLFOCUS:
-                    //    if (!_useAttachedSearchControl)
-                    //    {
-                    //        base.WndProc(ref m);
-                    //        return;
-                    //    }
-
-                    //    if (_useAttachedSearchControl)
-                    //    {
-                    //        if (_suppressKillFocusCheckOnce)
-                    //        {
-                    //            _suppressKillFocusCheckOnce = false;
-                    //        }
-                    //        else if (!_attachedSearchControl.Focused && !this.Focused &&
-                    //                 m.WParam.ToString() != this.Handle.ToString() &&
-                    //                 m.WParam.ToString() != _attachedSearchControl.Handle.ToString())
-                    //        {
-                    //            _suppressKillFocusCheckOnce = true;
-                    //            NativeMethods.PostMessage(_attachedSearchControl.Handle, m.Msg, m.WParam, m.LParam);
-                    //        }
-                    //        else
-                    //        {
-                    //            return;
-                    //        }
-                    //    }
-                    //    break;
             }
 
             base.WndProc(ref m);
@@ -218,7 +166,7 @@ namespace BitCollectors.WinFormsControls
 
         protected override void OnDrawNode(DrawTreeNodeEventArgs e)
         {
-            if (e == null || e.Node == null || e.Node.Bounds.IsEmpty || !e.Node.IsVisible)
+            if (e?.Node == null || e.Node.Bounds.IsEmpty || !e.Node.IsVisible)
                 return;
 
             if (string.IsNullOrEmpty(_filterToRun))
@@ -228,11 +176,11 @@ namespace BitCollectors.WinFormsControls
             else
             {
                 var treeNodeEx = (TreeNodeEx)e.Node;
-                var stringSize = TextRenderer.MeasureText(e.Node.Text.Substring(treeNodeEx.MatchStartIndex, treeNodeEx.MatchEndIndex - treeNodeEx.MatchStartIndex), e.Node.NodeFont);
-                var startOffset = 0;
-                if (treeNodeEx.IsMatch) //.FilterType == FilterTypes.DirectMatch)
+                if (treeNodeEx.IsMatch)
                 {
+                    var stringSize = TextRenderer.MeasureText(e.Node.Text.Substring(treeNodeEx.MatchStartIndex, treeNodeEx.MatchEndIndex - treeNodeEx.MatchStartIndex), e.Node.NodeFont);
                     int padding = -1;
+                    var startOffset = 0;
                     if (treeNodeEx.MatchStartIndex > 0)
                     {
                         var measurementOffset =
@@ -242,19 +190,95 @@ namespace BitCollectors.WinFormsControls
                         padding = 6;
                     }
 
-                    e.Graphics.FillRectangle(Brushes.Orange, e.Node.Bounds.Left + startOffset - padding, e.Node.Bounds.Bottom - 2, stringSize.Width - 6, e.Node.IsSelected ? 1 : 2);
+                    var curState = e.State;
+                    var font = e.Node.NodeFont ?? Font;
+                    var color = (((curState & TreeNodeStates.Selected) == TreeNodeStates.Selected) && Focused)
+                        ? SystemColors.HighlightText
+                        : (e.Node.ForeColor != Color.Empty) ? e.Node.ForeColor : ForeColor;
+
+                    if ((curState & TreeNodeStates.Selected) == TreeNodeStates.Selected)
+                    {
+                        e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Bounds);
+                        ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, color, SystemColors.Highlight);
+                    }
+                    else
+                    {
+                        using (Brush brush = new SolidBrush(BackColor))
+                        {
+                            e.Graphics.FillRectangle(brush, e.Bounds);
+                        }
+                    }
+
+                    e.Graphics.FillRectangle(Brushes.Orange, e.Node.Bounds.Left + startOffset - padding, e.Node.Bounds.Top + 1, stringSize.Width - 6, e.Node.Bounds.Height - 4);
+
+                    if ((curState & TreeNodeStates.Selected) == TreeNodeStates.Selected)
+                    {
+                        TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, color, TextFormatFlags.Default);
+                    }
+                    else
+                    {
+                        TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, color, TextFormatFlags.Default);
+                    }
+                }
+                else
+                {
+                    e.DrawDefault = true;
                 }
 
-                var textColor = e.Node.IsSelected && this.Focused ? Color.White : e.Node.ForeColor;
+                //var treeNodeEx = (TreeNodeEx)e.Node;
+                //var stringSize = TextRenderer.MeasureText(e.Node.Text.Substring(treeNodeEx.MatchStartIndex, treeNodeEx.MatchEndIndex - treeNodeEx.MatchStartIndex), e.Node.NodeFont);
+                //var startOffset = 0;
+                //if (treeNodeEx.IsMatch)
+                //{
+                //    int padding = -1;
+                //    if (treeNodeEx.MatchStartIndex > 0)
+                //    {
+                //        var measurementOffset =
+                //            TextRenderer.MeasureText(e.Node.Text.Substring(0, treeNodeEx.MatchStartIndex),
+                //                e.Node.NodeFont);
+                //        startOffset = measurementOffset.Width;
+                //        padding = 6;
+                //    }
 
-                TextRenderer.DrawText(e.Graphics,
-                    e.Node.Text,
-                    e.Node.NodeFont,
-                    //this.Font,
-                    e.Bounds,
-                    textColor,
-                    Color.Empty,
-                    TextFormatFlags.VerticalCenter);
+                //    e.Graphics.FillRectangle(Brushes.Orange, e.Node.Bounds.Left + startOffset - padding, e.Node.Bounds.Top + 3, stringSize.Width - 6, e.Node.Bounds.Height - 6);
+                //}
+
+                //var textColor = e.Node.IsSelected && this.Focused ? SystemColors.HighlightText : e.Node.ForeColor;
+
+                //TextRenderer.DrawText(e.Graphics,
+                //    e.Node.Text,
+                //    e.Node.NodeFont,
+                //    //this.Font,
+                //    e.Bounds,
+                //    textColor,
+                //    Color.Empty,
+                //    TextFormatFlags.VerticalCenter);
+
+
+                //Simulate default text drawing here 
+
+
+                //Font font = (node.NodeFont != null) ? node.NodeFont : node.TreeView.Font;
+                //Color color = (((curState & TreeNodeStates.Selected) == TreeNodeStates.Selected) && node.TreeView.Focused) ? SystemColors.HighlightText : (node.ForeColor != Color.Empty) ? node.ForeColor : node.TreeView.ForeColor;
+
+                // Draw the actual node. 
+                //if ((curState & TreeNodeStates.Selected) == TreeNodeStates.Selected)
+                //{
+                //    g.FillRectangle(SystemBrushes.Highlight, bounds);
+                //    ControlPaint.DrawFocusRectangle(g, bounds, color, SystemColors.Highlight);
+                //    TextRenderer.DrawText(g, e.Node.Text, font, bounds, color, TextFormatFlags.Default);
+                //}
+                //else
+                //{
+                //    // For Dev10 bug 478621: We need to draw the BackColor of 
+                //    // nodes same as BackColor of treeview.
+                //    using (Brush brush = new SolidBrush(BackColor))
+                //    {
+                //        g.FillRectangle(brush, bounds);
+                //    }
+
+                //    TextRenderer.DrawText(g, e.Node.Text, font, bounds, color, TextFormatFlags.Default);
+                //}
             }
 
             base.OnDrawNode(e);
@@ -265,7 +289,7 @@ namespace BitCollectors.WinFormsControls
         #endregion
 
         #region Public methods
-        public System.Windows.Forms.TextBox AttachedSearchControl
+        public TextBoxEx AttachedSearchControl
         {
             get { return _attachedSearchControl; }
             set
@@ -346,29 +370,10 @@ namespace BitCollectors.WinFormsControls
         #endregion
 
         #region Internal members
-        internal bool IsFiltered
-        {
-            get { return !string.IsNullOrEmpty(_lastFilter); }
-        }
+        internal bool IsFiltered => !string.IsNullOrEmpty(_lastFilter);
         #endregion
 
         #region Private methods
-        private string[] EncodeNodePath(TreeNodeEx treeNode)
-        {
-            if (treeNode == null)
-                return null;
-
-            var node = treeNode;
-            var returnValue = new string[node.Level + 1];
-            do
-            {
-                returnValue[node.Level] = $@"{node.Level}|{node.Index}|{node.Text}";
-                node = node.Parent;
-            } while (node != null);
-
-            return returnValue;
-        }
-
         private void Filter(string filter, bool force)
         {
             filter = (filter ?? "").Trim();

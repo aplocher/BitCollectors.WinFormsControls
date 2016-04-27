@@ -1,11 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BitCollectors.WinFormsControls.Internal
 {
     internal class SearchControlWrapper
     {
-        private TextBox _searchInputControl;
+        private TextBoxEx _searchInputControl;
         private TreeViewEx _treeViewControl;
 
         private void AssignSearchControlWndProcHook(TreeViewEx treeView)
@@ -31,20 +33,9 @@ namespace BitCollectors.WinFormsControls.Internal
                 case Keys.Down:
                     keyArguments.Handled = true;
                     keyArguments.SuppressKeyPress = true;
-                    //_treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
-                    //    ? _treeViewControl.Nodes[0]
-                    //    : (TreeNodeEx)_treeViewControl.SelectedNode.NextNode;
                     _treeViewControl.Focus();
                     break;
 
-                    //case Keys.Up:
-                    //    keyArguments.Handled = true;
-                    //    keyArguments.SuppressKeyPress = true;
-                    //    //_treeViewControl.SelectedNode = _treeViewControl.SelectedNode == null
-                    //    //    ? _treeViewControl.Nodes.Last()
-                    //    //    : (TreeNodeEx)_treeViewControl.SelectedNode.PrevNode;
-                    //    _treeViewControl.Focus();
-                    //    break;
             }
         }
 
@@ -56,44 +47,6 @@ namespace BitCollectors.WinFormsControls.Internal
         private void HandleSearchInputKeyUp(KeyEventArgs keyArguments)
         {
             _treeViewControl.Filter(_searchInputControl.Text);
-
-            //if (string.IsNullOrEmpty(_searchInputControl.Text))
-            //{
-            //    _treeViewControl.Filter(string.Empty);
-            //}
-            //else
-            //{
-            //    int sleepTime = 1000;
-            //    _executeSearchAt = DateTime.Now.AddMilliseconds(sleepTime).Ticks;
-
-            //    if (_keyWaitRunning)
-            //        return;
-
-            //    _keyWaitRunning = true;
-            //    //if (_performSearchTask == null)
-            //    //{
-            //    _performSearchTask = Task.Factory.StartNew(() =>
-            //    {
-            //        int looped = 0;
-            //        do
-            //        {
-            //            Thread.Sleep(sleepTime);
-            //            looped++;
-            //        } while (DateTime.Now.Ticks < _executeSearchAt && looped < 5);
-            //    }).ContinueWith(t =>
-            //        {
-            //            _keyWaitRunning = false;
-            //            _treeViewControl.Filter(_searchInputControl.Text);
-            //        },
-            //            CancellationToken.None,
-            //            TaskContinuationOptions.None,
-            //            _mainContext);
-            //    //}
-            //    //else
-            //    //{
-            //    //    _performSearchTask.Start();
-            //    //}
-            //}
         }
 
         private void HandleTreeViewKeyDown(KeyEventArgs keyArguments)
@@ -151,21 +104,16 @@ namespace BitCollectors.WinFormsControls.Internal
 
         private char GetKeyCharWithProperCasing(bool shiftPressed, char keyCode)
         {
-            bool capsLocked = Control.IsKeyLocked(Keys.CapsLock);
-            if ((shiftPressed || capsLocked) && shiftPressed != capsLocked)
-            {
-                return char.ToUpper(keyCode);
-            }
-            else
-            {
-                return char.ToLower(keyCode);
-            }
+            var capsLocked = Control.IsKeyLocked(Keys.CapsLock);
+            return (shiftPressed || capsLocked) && shiftPressed != capsLocked
+                ? char.ToUpper(keyCode)
+                : char.ToLower(keyCode);
         }
 
         private bool _isEnhancedTextBox = false;
         private TextBoxEx _enhancedTextBox = null;
 
-        public void WireUpAttachedSearchControl(TextBox control, TreeViewEx treeView)
+        public void WireUpAttachedSearchControl(TextBoxEx control, TreeViewEx treeView)
         {
             this._searchInputControl = control;
             this._treeViewControl = treeView;
@@ -173,11 +121,11 @@ namespace BitCollectors.WinFormsControls.Internal
 
             AssignSearchControlWndProcHook(treeView);
 
-            _isEnhancedTextBox = (_searchInputControl.GetType() == typeof(TextBoxEx));
-            if (_isEnhancedTextBox)
-            {
-                _enhancedTextBox = _searchInputControl as TextBoxEx;
-            }
+            _enhancedTextBox = _searchInputControl as TextBoxEx;
+            _isEnhancedTextBox = (_enhancedTextBox != null);
+
+            this._searchInputControl.TextChanged
+                += (sender, args) => HandleSearchInputTextChanged(args);
 
             this._searchInputControl.KeyDown
                 += (sender, args) => HandleSearchInputKeyDown(args);
@@ -190,6 +138,11 @@ namespace BitCollectors.WinFormsControls.Internal
 
             this._treeViewControl.KeyUp
                 += (sender, args) => HandleTreeViewKeyUp(args);
+        }
+
+        private void HandleSearchInputTextChanged(EventArgs args)
+        {
+            _treeViewControl?.Filter(_searchInputControl.Text);
         }
 
         private void HandleTreeViewKeyUp(KeyEventArgs args)

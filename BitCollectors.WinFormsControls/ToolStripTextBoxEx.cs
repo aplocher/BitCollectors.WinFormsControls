@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
@@ -9,7 +10,7 @@ namespace BitCollectors.WinFormsControls
     [ToolStripItemDesignerAvailability(
         ToolStripItemDesignerAvailability.MenuStrip | ToolStripItemDesignerAvailability.ToolStrip |
         ToolStripItemDesignerAvailability.ContextMenuStrip)]
-    internal class ToolStripTextBoxEx : ToolStripControlHostInternal
+    public class ToolStripTextBoxEx : ToolStripControlHostInternal
     {
         internal static readonly object EventAcceptsTabChanged = new object();
         internal static readonly object EventBorderStyleChanged = new object();
@@ -34,6 +35,16 @@ namespace BitCollectors.WinFormsControls
         #endregion
 
         #region Properties
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Browsable(true)]
+        [EditorBrowsable(EditorBrowsableState.Always)]
+        public bool EscapeKeyClearsInput
+        {
+            get { return InnerTextBox.EscapeKeyClearsInput; }
+            set { InnerTextBox.EscapeKeyClearsInput = value; }
+        }
+
         public bool AcceptsReturn
         {
             get { return InnerTextBox.AcceptsReturn; }
@@ -243,6 +254,22 @@ namespace BitCollectors.WinFormsControls
             }
             base.OnUnsubscribeControlEvents(control);
         }
+
+        protected override bool ProcessCmdKey(ref Message m, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Escape:
+                    if (EscapeKeyClearsInput && (Focused || InnerTextBox.Focused))
+                    {
+                        InnerTextBox.Clear();
+                        return false;
+                    }
+                    break;
+            }
+            return base.ProcessCmdKey(ref m, keyData);
+        }
+
         #endregion
 
         #region Other methods
@@ -422,8 +449,7 @@ namespace BitCollectors.WinFormsControls
 
         internal void RaiseEvent(object key, EventArgs e)
         {
-            var handler = (EventHandler)Events[key];
-            if (handler != null) handler(this, e);
+            ((EventHandler)Events[key])?.Invoke(this, e);
         }
 
         public void ScrollToCaret()
